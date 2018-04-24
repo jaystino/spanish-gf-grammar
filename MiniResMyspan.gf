@@ -5,7 +5,7 @@ param
   Number = Sg | Pl ;
   Gender = Masc | Fem ;
   Case   = Nom | Acc ;
-  Person = P1 | P2 | P3 ;
+  Person = P1 | P2a | P2b | P3 ;
   Polarity = Pos | Neg ;
 
 
@@ -54,7 +54,9 @@ oper
     } ;
 
   Adjective : Type = {
-    s : Str
+    s : Str ;
+    g : Gender
+    -- add number
     } ;
 
   mkA = overload {
@@ -69,9 +71,11 @@ oper
     = \pl,sg1,sg3 -> {
       s = table {
         Sg => table {
-	  P1 => sg1 ;
-	  P2 => pl ;
-	  P3 => sg3
+	  P1 => sg1 ; -- yo
+	  P2a => sg2a ; -- tú
+    P2b => sg2b ; -- vos
+	  P3 => sg3 ; -- el/ella/usted
+    P3 => pl3  -- ell@s/ustedes
 	  } ;
         Pl => table {
 	  _ => pl
@@ -123,14 +127,14 @@ oper
       a = {g = g ; n = n ; p = p} ;
       } ;
 
-  copula : Verb = mkV "are" "am" "is" ;
+  copula : Verb = mkV "soy" "eres" "es" ;
   
   do_V : Verb = mkV "do" "do" "does" ;
   dont_V : Verb = mkV "don't" "don't" "doesn't" ;
 
   negation : Polarity -> Str = \p -> case p of {
     Pos => [] ;
-    Neg => "not"
+    Neg => "no"
     } ;
 
   addS : Str -> Str = \s -> case s of {
