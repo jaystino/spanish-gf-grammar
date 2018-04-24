@@ -134,8 +134,8 @@ oper
     } ;
 
   addS : Str -> Str = \s -> case s of {
-    bab + "y" => bab + "ies" ;
-    _   + "s" => s + "es" ;
+    _ + "l" => s + "es" ;
+    _   + "n" => s + "es" ;
     _ => s + "s"
     } ;
 
