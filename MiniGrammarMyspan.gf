@@ -1,5 +1,4 @@
-concrete MiniGrammarMyeng of MiniGrammar = open MiniResMyeng, Prelude in {
-
+concrete MiniGrammarMyspan of MiniGrammar = open MiniResMyspan, Prelude in {
 
   lincat
     Utt = {s : Str} ;
@@ -22,6 +21,7 @@ concrete MiniGrammarMyeng of MiniGrammar = open MiniResMyeng, Prelude in {
     PN = ProperName ;
 
   lin
+    -- utterance:
     UttS s = s ;
     
     UttNP np = {s = np.s ! Nom} ;
@@ -29,7 +29,8 @@ concrete MiniGrammarMyeng of MiniGrammar = open MiniResMyeng, Prelude in {
     UsePresCl pol cl = {
       s = pol.s ++ cl.s ! pol.p ;
       } ;
-      
+    
+    -- verbs:
     PredVP np vp = {
       s = \\p =>
          np.s ! Nom ++
@@ -55,7 +56,8 @@ concrete MiniGrammarMyeng of MiniGrammar = open MiniResMyeng, Prelude in {
       c = \\_ => v2.c.prep ++ np.s ! v2.c.c ;
       isAux = False ;
       } ;
-      
+    
+    -- adjectives:
     UseAP ap = {
       v = copula ;
       c = \\a => ap.s ;
@@ -65,22 +67,25 @@ concrete MiniGrammarMyeng of MiniGrammar = open MiniResMyeng, Prelude in {
     AdvVP vp adv = vp ** {
       c = \\a => vp.c ! a ++ adv.s
       } ;
-      
+    
+    -- determiners:
     DetCN det cn = {
       s = \\c => det.s ++ cn.s ! det.n ;
       a = {g = cn.g ; n = det.n ; p = P3} ;
       } ;
-      
+    
+    -- pronouns:
     UsePN pn = {s = \\c => pn.s ; a = {g = pn.g ; n = Sg ; p = P3}} ;
     
     UsePron p = p ;
     
+    -- nouns:
     MassNP cn = {
       s = \\c => cn.s ! Sg ;
       a = {g = cn.g ; n = Sg ; p = P3} ;
       } ;
     
-    a_Det = mkDeterminer (pre {("a"|"e"|"i"|"o") => "an"  ; _ => "a"}) Sg ; ---
+    a_Det = mkDeterminer (pre {("a"|"e"|"i"|"o") => "an"  ; _ => "a"}) Sg ;
     
     aPl_Det = mkDeterminer "" Pl ;
     
@@ -90,6 +95,7 @@ concrete MiniGrammarMyeng of MiniGrammar = open MiniResMyeng, Prelude in {
     
     UseN n = n ;
     
+    -- adjectives:
     AdjCN ap cn = {
       s = \\n => ap.s ++ cn.s ! n ;
       g = cn.g ;
@@ -97,28 +103,55 @@ concrete MiniGrammarMyeng of MiniGrammar = open MiniResMyeng, Prelude in {
 
     PositA a = a ;
 
+    -- prepositions:
     PrepNP prep np = {s = prep.s ++ np.s ! prep.c} ;
 
+    -- conjunctions:
     CoordS conj a b = {s = a.s ++ conj.s ++ b.s} ;
     
     PPos  = {s = "" ; p = Pos} ;
     PNeg  = {s = "" ; p = Neg} ;
 
-    and_Conj = {s = "and"} ;
-    or_Conj = {s = "or"} ;
+    and_Conj = {s = "y"} ;
+    or_Conj = {s = "o"} ;
 
-    every_Det = mkDeterminer "every" Sg ;
+    cada_Det = mkDeterminer "cada" Sg ;
+    todo_Det = mkDeterminer "todo" Masc Sg ;
+    toda_Det = mkDeterminer "toda" Fem Sg ;
+    todos_Det = mkDeterminer "todos" Masc Pl ;
+    todas_Det = mkDeterminer "todas" Fem Pl ;
 
-    in_Prep = {s = "in" ; c = Acc} ;
-    on_Prep = {s = "on" ; c = Acc} ;
-    with_Prep = {s = "with" ; c = Acc} ;
+    in_Prep = {s = "en" ; c = Acc} ;
+    on_Prep = {s = "en" ; c = Acc} ;
+    with_Prep = {s = "con" ; c = Acc} ;
 
-    i_Pron = mkPronoun "I" "me" Masc Sg P1 ;
-    youSg_Pron = mkPronoun "you" "you" Fem Sg P2  ;
-    he_Pron = mkPronoun "he" "him" Masc Sg P3  ;
-    she_Pron = mkPronoun "she" "her" Fem Sg P3  ;
-    we_Pron = mkPronoun "we" "us" Masc Pl P1  ;
-    youPl_Pron = mkPronoun "you" "you" Fem Pl P2 ;
-    they_Pron = mkPronoun "they" "them" Masc Pl P3 ;
+    i_Pron = mkPronoun "yo" "me" Masc Sg P1 ;
+    youSg_Pron = mkPronoun "tú" "you" Fem Sg P2  ;
+    he_Pron = mkPronoun "él" "him" Masc Sg P3  ;
+    she_Pron = mkPronoun "ella" "her" Fem Sg P3  ;
+    wemasc_Pron = mkPronoun "nosotros" "us" Masc Pl P1  ;
+    wefem_Pron = mkPronoun "nosotras" "us" Fem Pl P1  ;
+    youPl_Pron = mkPronoun "ustedes" "you" Fem Pl P2 ;
+    theymasc_Pron = mkPronoun "ellos" "them" Masc Pl P3 ;
+    theymfem_Pron = mkPronoun "ellas" "them" Fem Pl P3 ;
     
+}
+
+
+
+
+abstract Grammar = {
+    cat
+      Cl ; NP ; VP ; AP ; CN ; Det ; N ; A ; V ; V2 ;
+    fun
+      PredVP : NP -> VP -> Cl ;
+      ComplV2 : V2 -> NP -> VP ;
+      DetCN : Det -> CN -> NP ;
+      ModCN : CN -> AP -> CN ;
+      UseV : V -> VP ;
+      UseN : N -> CN ;
+      UseA : A -> AP ;
+      
+      a_Det, the_Det : Det ; this_Det, these_Det : Det ;
+      i_NP, she_NP, we_NP : NP ;
 }
