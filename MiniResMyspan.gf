@@ -5,8 +5,9 @@ param
   Number = Sg | Pl ;
   Gender = Masc | Fem ;
   Case   = Nom | Acc ;
-  Person = P1 | P2a | P2b | P3 ;
+  Person = P1 | P2 | P3 ;
   Polarity = Pos | Neg ;
+  -- Register = Form | Inform ; Maybe this line just for verbs????
 
 
 oper
@@ -72,8 +73,8 @@ oper
       s = table {
         Sg => table {
 	  P1 => sg1 ; -- yo
-	  P2a => sg2a ; -- tú
-    P2b => sg2b ; -- vos
+	  P2 => sg2 ; -- tú
+    P2 => sg2 ; -- vos
 	  P3 => sg3 ; -- el/ella/usted
     P3 => pl3  -- ell@s/ustedes
 	  } ;
