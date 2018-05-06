@@ -4,7 +4,7 @@
 -- can be used as template for new resource grammars
 -- here modified for English
 
-concrete MiniLangMyeng of MiniLang = MiniGrammarMyspan, MiniLexiconMyspan ;
+concrete MiniLangMyspan of MiniLang = MiniGrammarMyspan, MiniLexiconMyspan ;
 
 -- concrete LangLat of Lang = 
 --  GrammarLat,

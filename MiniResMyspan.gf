@@ -8,10 +8,12 @@ param
   Person = P1 | P2 | P3 ;
   Polarity = Pos | Neg ;
   -- Register = Form | Inform ; Maybe this line just for verbs????
+  -- Aux = Haber | Estar ;
+  -- Tense = Pres | Pret | etc...
 
 
 oper
-  Agr : Type = {g : Gender ; n : Number ; p : Person} ;
+  Agr : Type = {g : Gender ; n : Number ; p : Person} ; -- register????????
 
   Noun : Type = {
     s : Number => Str ;
@@ -72,17 +74,17 @@ oper
     = \pl,sg1,sg3 -> {
       s = table {
         Sg => table {
-	  P1 => sg1 ; -- yo
-	  P2 => sg2 ; -- tú
-    P2 => sg2 ; -- vos
-	  P3 => sg3 ; -- el/ella/usted
-    P3 => pl3  -- ell@s/ustedes
-	  } ;
+    	  P1 => sg1 ; -- yo
+    	  P2 => sg2 ; -- tú
+          P2 => sg2 ; -- vos
+    	  P3 => sg3 ; -- el/ella/usted
+          P3 => pl3  -- ell@s/ustedes
+	    } ;
         Pl => table {
-	  _ => pl
-	  }
-	} ;
-      } ;
+	      _ => pl
+	    }
+	  } ;
+    } ;
 
 
   smartVerb : Str -> Verb = \inf -> case inf of {
@@ -123,21 +125,24 @@ oper
     = \nom,acc,g,n,p -> {
       s = table {
         Nom => nom ;
-	Acc => acc
+	    Acc => acc
 	} ;
       a = {g = g ; n = n ; p = p} ;
       } ;
 
-  copula : Verb = mkV "soy" "eres" "es" ;
+  copula : Verb = mkV "soy" "eres" "es" "somos" "son" ;
   
+  -- below not in spanish??
   do_V : Verb = mkV "do" "do" "does" ;
   dont_V : Verb = mkV "don't" "don't" "doesn't" ;
 
+  -- Negation:
   negation : Polarity -> Str = \p -> case p of {
     Pos => [] ;
     Neg => "no"
     } ;
 
+  -- Spanish plural rule:
   addS : Str -> Str = \s -> case s of {
     _ + "l" => s + "es" ;
     _   + "n" => s + "es" ;

@@ -1,4 +1,8 @@
 concrete MiniLexiconMyeng of MiniLexicon = MiniGrammarMyeng ** open MiniResMyeng in {
+
+flags 
+  optimize=values ; coding=utf8 ;
+  
 lin ya_Adv = mkAdv "ya" ;
 lin animal_N = mkN "animal" ;
 lin manzana_N = mkN "manzana" ;

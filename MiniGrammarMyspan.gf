@@ -44,7 +44,24 @@ concrete MiniGrammarMyspan of MiniGrammar = open MiniResMyspan, Prelude in {
 	   } ++
 	 vp.c ! np.a ;
       } ;
-      
+
+    -- in chap 9:
+  -- lin PredVP np vp =
+    --  let                 -- why "let"?
+    --    subj = (np.s ! Nom).obj ;
+    --    obj = vp.obj ;
+    --    clit = vp.clit ;
+    --    verb = table {
+    --    Pres => agrV vp.v np.a ;
+    --    Perf => agrV (auxVerb vp.v.aux) np.a ++ agrPart vp.v np.a
+    --    }
+    --    in {
+    --    s = \\t => subj ++ clit ++ verb ! t ++ obj
+    --    } ;
+    
+    -- in book... UseV : V -> VP ????
+                  lin UseV v = v
+
     UseV v = {
       v = v ;
       c = \\_ => [] ;
